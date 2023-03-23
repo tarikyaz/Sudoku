@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,9 +28,20 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    
+    private void OnDrawGizmos()
     {
-
+        if (!Application.isPlaying)
+        {
+            for (int i = 0; i < CellsArray.Length; i++)
+            {
+                Cell cell = CellsArray[i];
+                for (int j = 0; j < CellsArray.Length; j++)
+                {
+                    Item item = cell.ItemsArray[j];
+                    item.SetText($"{i + 1}x{j + 1}");
+                }
+            }
+        }
     }
 }

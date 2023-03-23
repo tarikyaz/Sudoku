@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Cell : MonoBehaviour
 {
     [SerializeField] GridLayoutGroup gridLayoutGroup;
-    [SerializeField] Item[] ItemsArray = new Item[9];
+    public Item[] ItemsArray = new Item[9];
     public void Init(int itemSize)
     {
         float itemPadding = (float)(gridLayoutGroup.spacing.magnitude / gridLayoutGroup.cellSize.magnitude);
