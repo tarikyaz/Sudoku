@@ -10,15 +10,20 @@ public class BoardManager : MonoBehaviour
     [SerializeField] GridLayoutGroup layoutGroup;
     [SerializeField] Cell[] CellsArray = new Cell[9];
     [SerializeField] LevelSetting levelTest;
-    [SerializeField] RectTransform cornerPoint;
+    [SerializeField] Item selectedItem;
     Item[,] items = new Item[9, 9];
-    float boardSize => Vector2.Distance(transform.position, cornerPoint.transform.position)*2;
+    float boardSize => GetComponent<RectTransform>().sizeDelta.x;
     struct NumSeries {
         public int a, b, c;
     }
-    void Start()
+   public void Init()
     {
+        InitScreen();
+        InitNumbers();
+    }
 
+    private void InitScreen()
+    {
         float minValue = Mathf.Min(canvasRec.sizeDelta.x, canvasRec.sizeDelta.y);
         float newBoardSize = minValue - .1f * minValue;
         GetComponent<RectTransform>().sizeDelta = new Vector2(newBoardSize, newBoardSize);
@@ -29,35 +34,63 @@ public class BoardManager : MonoBehaviour
         cellPadding = Mathf.FloorToInt(cellPadding);
         layoutGroup.cellSize = new Vector2(cellSize, cellSize);
         layoutGroup.spacing = new Vector2(cellPadding, cellPadding);
-        int itemSize = Mathf.FloorToInt( cellSize / 3);
+        int itemSize = Mathf.FloorToInt(cellSize / 3);
         foreach (var cell in CellsArray)
         {
             cell.Init(itemSize);
         }
-        InitNumbers();
     }
 
     private void OnEnable()
     {
         Item.OnMouseEnter += OnMouseEnterItemHandler;
         Item.OnMouseLeave += OnMouseLeaveItemHandler;
+        Item.OnMouseClick += OnMouseClickItemHandler;
+        Key.OnKeyClicked += OnKeyClickedHandler;
     }
-    
+
+
+
     private void OnDisable()
     {
         Item.OnMouseEnter -= OnMouseEnterItemHandler;
         Item.OnMouseLeave -= OnMouseLeaveItemHandler;
+        Item.OnMouseClick -= OnMouseClickItemHandler;
+        Key.OnKeyClicked -= OnKeyClickedHandler;
+
+    }
+
+
+    private void OnKeyClickedHandler(LevelData.ItemTypeEnum obj)
+    {
+        if (selectedItem != null)
+        {
+            selectedItem.SetType(obj);
+        }
+    }
+    private void OnMouseClickItemHandler(Item _item)
+    {
+        if (selectedItem != null)
+        {
+            selectedItem.ResetColor();
+            selectedItem = null;
+        }
+        selectedItem = _item;
+        OnMouseEnterItemHandler(_item);
+        selectedItem.SetClickColor();
+        InGameManager.Instance.keyboard.Show();
     }
 
     private void OnMouseLeaveItemHandler(Item _item)
     {
-
         for (int i = 0; i < items.GetLength(0); i++)
         {
             for (int j = 0; j < items.GetLength(1); j++)
             {
-                items[i,j].ResetColor();
-
+                if (selectedItem != items[i, j])
+                {
+                    items[i, j].ResetColor();
+                }
             }
         }
 
@@ -103,10 +136,17 @@ public class BoardManager : MonoBehaviour
     }
     private void OnMouseEnterItemHandler(Item _item)
     {
-        _item.SetelectColor();
+
+        if (selectedItem != _item)
+        {
+            _item.SetSlelectColor();
+        }
         foreach (var item in GetRelavieItems(_item))
         {
-            item.SetSiblingSelectColor();
+            if (selectedItem != item)
+            {
+                item.SetSiblingSelectColor();
+            }
         }
     }
 
@@ -139,9 +179,24 @@ public class BoardManager : MonoBehaviour
                 }
                 else
                 {
-                    item.SetType(levelNumbers[i, j].Type, levelNumbers[i,j].StartEnabled, i,j);
+                    item.Init(levelNumbers[i, j].Type, levelNumbers[i,j].StartEnabled, i,j);
                 }
             }
         }
+    }
+    public void OnClickOutSide()
+    {
+        if (selectedItem !=null)
+        {
+            selectedItem = null;
+        }
+        for (int i = 0; i < items.GetLength(0); i++)
+        {
+            for (int j = 0; j < items.GetLength(1); j++)
+            {
+                items[i, j].ResetColor();
+            }
+        }
+        InGameManager.Instance.keyboard.Hide();
     }
 }

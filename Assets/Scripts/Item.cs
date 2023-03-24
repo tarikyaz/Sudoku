@@ -6,18 +6,22 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Item : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler
+public class Item : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler , IPointerClickHandler
 {
-    public static Action<Item> OnMouseEnter , OnMouseLeave;
+    public static Action<Item> OnMouseEnter , OnMouseLeave , OnMouseClick;
     [SerializeField] TMP_Text textArea;
     [SerializeField] Image _image;
-    internal LevelData.ItemTypeEnum itemType = LevelData.ItemTypeEnum.None;
+    LevelData.ItemTypeEnum itemCurrectType = LevelData.ItemTypeEnum.None;
+    LevelData.ItemTypeEnum itemType = LevelData.ItemTypeEnum.None;
+    public bool ItsCurrect => itemType == itemCurrectType;
     Color colorCache;
     internal int I, J;
-    public void SetType(LevelData.ItemTypeEnum type, bool startEnabled, int i, int j)
+    bool isStartedEnabled = false;
+    public void Init(LevelData.ItemTypeEnum type, bool startEnabled, int i, int j)
     {
         colorCache = _image.color;
-        itemType = type;
+        itemCurrectType = type;
+        isStartedEnabled = startEnabled;
         I = i;
         J = j;
         if (!startEnabled)
@@ -27,8 +31,8 @@ public class Item : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler
         }
         switch (type)
         {
-            case LevelData.ItemTypeEnum.n2: SetText("2"); break;
             case LevelData.ItemTypeEnum.n1: SetText("1"); break;
+            case LevelData.ItemTypeEnum.n2: SetText("2"); break;
             case LevelData.ItemTypeEnum.n3: SetText("3"); break;
             case LevelData.ItemTypeEnum.n4: SetText("4"); break;
             case LevelData.ItemTypeEnum.n5: SetText("5"); break;
@@ -37,7 +41,23 @@ public class Item : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler
             case LevelData.ItemTypeEnum.n8: SetText("8"); break;
             case LevelData.ItemTypeEnum.n9: SetText("9"); break;
             default: SetText("Not set"); break;
-
+        }
+    }
+    public void SetType(LevelData.ItemTypeEnum type)
+    {
+        itemType = type;
+        switch (type)
+        {
+            case LevelData.ItemTypeEnum.n1: SetText("1"); break;
+            case LevelData.ItemTypeEnum.n2: SetText("2"); break;
+            case LevelData.ItemTypeEnum.n3: SetText("3"); break;
+            case LevelData.ItemTypeEnum.n4: SetText("4"); break;
+            case LevelData.ItemTypeEnum.n5: SetText("5"); break;
+            case LevelData.ItemTypeEnum.n6: SetText("6"); break;
+            case LevelData.ItemTypeEnum.n7: SetText("7"); break;
+            case LevelData.ItemTypeEnum.n8: SetText("8"); break;
+            case LevelData.ItemTypeEnum.n9: SetText("9"); break;
+            default: SetText(""); break;
         }
     }
     public void SetText(string text)
@@ -48,14 +68,17 @@ public class Item : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        OnMouseEnter?.Invoke(this);
+        if (!isStartedEnabled)
+        {
+            OnMouseEnter?.Invoke(this);
+        }
     }
 
     public void SetSiblingSelectColor()
     {
         _image.color = Color.Lerp(colorCache, Color.black, .3f);
     }
-    public void SetelectColor()
+    public void SetSlelectColor()
     {
         _image.color = Color.Lerp(colorCache, Color.black, .5f);
     }
@@ -66,5 +89,16 @@ public class Item : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler
     public void OnPointerExit(PointerEventData eventData)
     {
         OnMouseLeave?.Invoke(this);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        OnMouseClick?.Invoke(this);
+    }
+
+    internal void SetClickColor()
+    {
+        _image.color = Color.Lerp(colorCache, Color.white, .5f);
+
     }
 }
