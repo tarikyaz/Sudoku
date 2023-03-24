@@ -9,6 +9,7 @@ public class BoardManager : MonoBehaviour
     [SerializeField] RectTransform canvasRec;
     [SerializeField] GridLayoutGroup layoutGroup;
     [SerializeField] Cell[] CellsArray = new Cell[9];
+    [SerializeField] LevelSetting levelTest;
     void Start()
     {
         float minValue = Mathf.Min(canvasRec.sizeDelta.x, canvasRec.sizeDelta.y);
@@ -26,6 +27,7 @@ public class BoardManager : MonoBehaviour
         {
             cell.Init(itemSize);
         }
+        InitNumbers();
     }
 
     
@@ -33,13 +35,30 @@ public class BoardManager : MonoBehaviour
     {
         if (!Application.isPlaying)
         {
-            for (int i = 0; i < CellsArray.Length; i++)
+            InitNumbers();
+        }
+    }
+
+    private void InitNumbers()
+    {
+        LevelData.ItemClass[,] levelNumbers = null;
+        if (levelTest != null)
+        {
+            levelNumbers = levelTest.GetArrayOfNumbers();
+        }
+        for (int i = 0; i < CellsArray.Length; i++)
+        {
+            Cell cell = CellsArray[i];
+            for (int j = 0; j < CellsArray.Length; j++)
             {
-                Cell cell = CellsArray[i];
-                for (int j = 0; j < CellsArray.Length; j++)
+                Item item = cell.ItemsArray[j];
+                if (levelNumbers == null)
                 {
-                    Item item = cell.ItemsArray[j];
                     item.SetText($"{i + 1}x{j + 1}");
+                }
+                else
+                {
+                    item.SetType(levelNumbers[i, j].Type, levelNumbers[i,j].StartEnabled);
                 }
             }
         }

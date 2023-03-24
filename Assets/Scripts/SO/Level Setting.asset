@@ -12,94 +12,176 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 061e479188494d646bde8d8973d900a6, type: 3}
   m_Name: Level Setting
   m_EditorClassIdentifier: 
-  CellsArray:
-  - ItemsArray:
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-  - ItemsArray:
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-  - ItemsArray:
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-  - ItemsArray:
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-  - ItemsArray:
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-  - ItemsArray:
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-  - ItemsArray:
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-  - ItemsArray:
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-  - ItemsArray:
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
-    - Type: 0
+  data:
+    CellsArray:
+    - ItemsArray:
+      - Type: 9
+        StartEnabled: 0
+      - Type: 5
+        StartEnabled: 0
+      - Type: 7
+        StartEnabled: 0
+      - Type: 4
+        StartEnabled: 0
+      - Type: 8
+        StartEnabled: 1
+      - Type: 3
+        StartEnabled: 0
+      - Type: 6
+        StartEnabled: 1
+      - Type: 1
+        StartEnabled: 0
+      - Type: 2
+        StartEnabled: 1
+    - ItemsArray:
+      - Type: 6
+        StartEnabled: 0
+      - Type: 1
+        StartEnabled: 0
+      - Type: 3
+        StartEnabled: 0
+      - Type: 2
+        StartEnabled: 0
+      - Type: 5
+        StartEnabled: 0
+      - Type: 7
+        StartEnabled: 1
+      - Type: 8
+        StartEnabled: 0
+      - Type: 4
+        StartEnabled: 0
+      - Type: 9
+        StartEnabled: 0
+    - ItemsArray:
+      - Type: 2
+        StartEnabled: 1
+      - Type: 8
+        StartEnabled: 0
+      - Type: 4
+        StartEnabled: 0
+      - Type: 1
+        StartEnabled: 0
+      - Type: 9
+        StartEnabled: 1
+      - Type: 6
+        StartEnabled: 0
+      - Type: 5
+        StartEnabled: 0
+      - Type: 3
+        StartEnabled: 0
+      - Type: 7
+        StartEnabled: 0
+    - ItemsArray:
+      - Type: 1
+        StartEnabled: 0
+      - Type: 7
+        StartEnabled: 1
+      - Type: 8
+        StartEnabled: 0
+      - Type: 5
+        StartEnabled: 0
+      - Type: 2
+        StartEnabled: 0
+      - Type: 4
+        StartEnabled: 0
+      - Type: 3
+        StartEnabled: 0
+      - Type: 6
+        StartEnabled: 0
+      - Type: 9
+        StartEnabled: 0
+    - ItemsArray:
+      - Type: 3
+        StartEnabled: 0
+      - Type: 6
+        StartEnabled: 1
+      - Type: 4
+        StartEnabled: 0
+      - Type: 9
+        StartEnabled: 1
+      - Type: 7
+        StartEnabled: 0
+      - Type: 1
+        StartEnabled: 1
+      - Type: 5
+        StartEnabled: 0
+      - Type: 2
+        StartEnabled: 1
+      - Type: 8
+        StartEnabled: 0
+    - ItemsArray:
+      - Type: 9
+        StartEnabled: 0
+      - Type: 5
+        StartEnabled: 0
+      - Type: 2
+        StartEnabled: 0
+      - Type: 3
+        StartEnabled: 0
+      - Type: 6
+        StartEnabled: 0
+      - Type: 8
+        StartEnabled: 0
+      - Type: 7
+        StartEnabled: 0
+      - Type: 4
+        StartEnabled: 1
+      - Type: 1
+        StartEnabled: 0
+    - ItemsArray:
+      - Type: 8
+        StartEnabled: 0
+      - Type: 4
+        StartEnabled: 0
+      - Type: 5
+        StartEnabled: 1
+      - Type: 2
+        StartEnabled: 0
+      - Type: 9
+        StartEnabled: 1
+      - Type: 1
+        StartEnabled: 0
+      - Type: 7
+        StartEnabled: 0
+      - Type: 3
+        StartEnabled: 0
+      - Type: 6
+        StartEnabled: 1
+    - ItemsArray:
+      - Type: 7
+        StartEnabled: 0
+      - Type: 9
+        StartEnabled: 0
+      - Type: 2
+        StartEnabled: 0
+      - Type: 4
+        StartEnabled: 0
+      - Type: 3
+        StartEnabled: 0
+      - Type: 6
+        StartEnabled: 0
+      - Type: 1
+        StartEnabled: 0
+      - Type: 8
+        StartEnabled: 0
+      - Type: 5
+        StartEnabled: 0
+    - ItemsArray:
+      - Type: 6
+        StartEnabled: 1
+      - Type: 1
+        StartEnabled: 0
+      - Type: 3
+        StartEnabled: 1
+      - Type: 8
+        StartEnabled: 0
+      - Type: 7
+        StartEnabled: 1
+      - Type: 5
+        StartEnabled: 0
+      - Type: 4
+        StartEnabled: 0
+      - Type: 2
+        StartEnabled: 0
+      - Type: 9
+        StartEnabled: 0

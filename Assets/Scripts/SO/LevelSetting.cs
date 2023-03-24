@@ -6,19 +6,46 @@ using UnityEngine;
 [CreateAssetMenu( fileName ="Level Setting", menuName = "Level/New Level Setting", order =0)]
 public class LevelSetting : ScriptableObject
 {
-    public CellClass[] CellsArray = new CellClass[9];
-    public enum ItemTypeEnum
+    [SerializeField] private LevelData data = new LevelData();
+
+    public LevelData Data { get => data; set => data = value; }
+
+    public LevelData.ItemClass[,] GetArrayOfNumbers()
     {
-        n1, n2, n3, n4, n5, n6, n7,n8,n9,Black
+        LevelData.ItemClass[,] arrayOfNumbers = new LevelData.ItemClass[9, 9];
+        for (int i = 0; i < Data.CellsArray.Length; i++)
+        {
+            LevelData.CellClass cell = Data.CellsArray[i];
+            for (int j = 0; j < Data.CellsArray.Length; j++)
+            {
+                LevelData.ItemClass item = cell.ItemsArray[j];
+                arrayOfNumbers[i, j] = item;
+            }
+        }
+        return arrayOfNumbers;
+    }
+
+
+
+}
+[Serializable]
+public class LevelData
+{
+    public CellClass[] CellsArray = new CellClass[9];
+    [Serializable]
+    public class ItemClass
+    {
+        public ItemTypeEnum Type;
+        public bool StartEnabled = false;
     }
     [Serializable]
-   public class CellClass
+    public class CellClass
     {
         public ItemClass[] ItemsArray = new ItemClass[9];
     }
-    [Serializable]  public class ItemClass {
-        public ItemTypeEnum Type;
+    public enum ItemTypeEnum
+    {
+        None,
+        n1, n2, n3, n4, n5, n6, n7, n8, n9
     }
-
-
 }

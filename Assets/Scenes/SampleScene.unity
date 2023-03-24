@@ -345,6 +345,7 @@ MonoBehaviour:
   - {fileID: 5561136147755224264}
   - {fileID: 8512425375549765682}
   - {fileID: 4517131489193857237}
+  levelTest: {fileID: 11400000, guid: eb65562d25b66c14ba313dff543aebe7, type: 2}
 --- !u!224 &374194487 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5661314004016439960, guid: d055d7abb246f6a4696f3031638030c8, type: 3}
