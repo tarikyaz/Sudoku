@@ -1,16 +1,15 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UI;
-
+using DG.Tweening;
 public class BoardManager : MonoBehaviour
 {
     [SerializeField] RectTransform canvasRec;
     [SerializeField] GridLayoutGroup layoutGroup;
     [SerializeField] Cell[] CellsArray = new Cell[9];
     [SerializeField] LevelSetting levelTest;
-    [SerializeField] Item selectedItem;
+    Item selectedItem;
     Item[,] items = new Item[9, 9];
     float boardSize => GetComponent<RectTransform>().sizeDelta.x;
     struct NumSeries {
@@ -175,7 +174,7 @@ public class BoardManager : MonoBehaviour
                 items[i, j] = item;
                 if (levelNumbers == null)
                 {
-                    item.SetText($"{i + 1}x{j + 1}");
+                    item.SetText($"{i + 1}x{j + 1}",true);
                 }
                 else
                 {
@@ -198,5 +197,25 @@ public class BoardManager : MonoBehaviour
             }
         }
         InGameManager.Instance.keyboard.Hide();
+    }
+
+    internal void ShowHint(Action onFinisHint)
+    {
+        List<Item> items = new List<Item>();
+        foreach (var cell in CellsArray)
+        {
+            foreach (var item in cell.ItemsArray)
+            {
+                items.Add(item);
+                item.TuggleHint(true);
+            }
+        }
+        DOVirtual.DelayedCall(3, () => {
+            foreach (var item in items)
+            {
+                item.TuggleHint(false);
+            }
+            onFinisHint?.Invoke();
+        });
     }
 }

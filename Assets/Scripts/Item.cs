@@ -9,8 +9,8 @@ using UnityEngine.UI;
 public class Item : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler , IPointerClickHandler
 {
     public static Action<Item> OnMouseEnter , OnMouseLeave , OnMouseClick;
-    [SerializeField] TMP_Text textArea;
-    [SerializeField] Image _image;
+    [SerializeField] TMP_Text play_Text, hint_Text;
+    [SerializeField] Image _image, hint_Image;
     LevelData.ItemTypeEnum itemCurrectType = LevelData.ItemTypeEnum.None;
     LevelData.ItemTypeEnum itemType = LevelData.ItemTypeEnum.None;
     public bool ItsCurrect => itemType == itemCurrectType;
@@ -24,23 +24,19 @@ public class Item : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler ,
         isStartedEnabled = startEnabled;
         I = i;
         J = j;
-        if (!startEnabled)
-        {
-            SetText("");
-            return;
-        }
+        hint_Image.gameObject.SetActive(isStartedEnabled);
         switch (type)
         {
-            case LevelData.ItemTypeEnum.n1: SetText("1"); break;
-            case LevelData.ItemTypeEnum.n2: SetText("2"); break;
-            case LevelData.ItemTypeEnum.n3: SetText("3"); break;
-            case LevelData.ItemTypeEnum.n4: SetText("4"); break;
-            case LevelData.ItemTypeEnum.n5: SetText("5"); break;
-            case LevelData.ItemTypeEnum.n6: SetText("6"); break;
-            case LevelData.ItemTypeEnum.n7: SetText("7"); break;
-            case LevelData.ItemTypeEnum.n8: SetText("8"); break;
-            case LevelData.ItemTypeEnum.n9: SetText("9"); break;
-            default: SetText("Not set"); break;
+            case LevelData.ItemTypeEnum.n1: SetText("1",true); break;
+            case LevelData.ItemTypeEnum.n2: SetText("2",true); break;
+            case LevelData.ItemTypeEnum.n3: SetText("3",true); break;
+            case LevelData.ItemTypeEnum.n4: SetText("4",true); break;
+            case LevelData.ItemTypeEnum.n5: SetText("5",true); break;
+            case LevelData.ItemTypeEnum.n6: SetText("6",true); break;
+            case LevelData.ItemTypeEnum.n7: SetText("7",true); break;
+            case LevelData.ItemTypeEnum.n8: SetText("8",true); break;
+            case LevelData.ItemTypeEnum.n9: SetText("9",true); break;
+            default: SetText("Not set",true); break;
         }
     }
     public void SetType(LevelData.ItemTypeEnum type)
@@ -48,21 +44,28 @@ public class Item : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler ,
         itemType = type;
         switch (type)
         {
-            case LevelData.ItemTypeEnum.n1: SetText("1"); break;
-            case LevelData.ItemTypeEnum.n2: SetText("2"); break;
-            case LevelData.ItemTypeEnum.n3: SetText("3"); break;
-            case LevelData.ItemTypeEnum.n4: SetText("4"); break;
-            case LevelData.ItemTypeEnum.n5: SetText("5"); break;
-            case LevelData.ItemTypeEnum.n6: SetText("6"); break;
-            case LevelData.ItemTypeEnum.n7: SetText("7"); break;
-            case LevelData.ItemTypeEnum.n8: SetText("8"); break;
-            case LevelData.ItemTypeEnum.n9: SetText("9"); break;
-            default: SetText(""); break;
+            case LevelData.ItemTypeEnum.n1: SetText("1",false); break;
+            case LevelData.ItemTypeEnum.n2: SetText("2",false); break;
+            case LevelData.ItemTypeEnum.n3: SetText("3",false); break;
+            case LevelData.ItemTypeEnum.n4: SetText("4",false); break;
+            case LevelData.ItemTypeEnum.n5: SetText("5",false); break;
+            case LevelData.ItemTypeEnum.n6: SetText("6",false); break;
+            case LevelData.ItemTypeEnum.n7: SetText("7",false); break;
+            case LevelData.ItemTypeEnum.n8: SetText("8",false); break;
+            case LevelData.ItemTypeEnum.n9: SetText("9",false); break;
+            default: SetText("",false); break;
         }
     }
-    public void SetText(string text)
+    public void SetText(string text, bool isHint)
     {
-        textArea.text = text;
+        if (isHint)
+        {
+            hint_Text.text = text;
+        }
+        else
+        {
+            play_Text.text = text;
+        }
     }
 
 
@@ -100,5 +103,10 @@ public class Item : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler ,
     {
         _image.color = Color.Lerp(colorCache, Color.white, .5f);
 
+    }
+
+    internal void TuggleHint(bool v)
+    {
+        hint_Image.gameObject.SetActive(v);
     }
 }
