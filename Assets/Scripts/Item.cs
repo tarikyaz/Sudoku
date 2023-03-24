@@ -1,15 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class Item : MonoBehaviour
+public class Item : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler
 {
+    public static Action<Item> OnMouseEnter , OnMouseLeave;
     [SerializeField] TMP_Text textArea;
+    [SerializeField] Image _image;
     internal LevelData.ItemTypeEnum itemType = LevelData.ItemTypeEnum.None;
-    public void SetType(LevelData.ItemTypeEnum type, bool startEnabled)
+    Color colorCache;
+    internal int I, J;
+    public void SetType(LevelData.ItemTypeEnum type, bool startEnabled, int i, int j)
     {
+        colorCache = _image.color;
         itemType = type;
+        I = i;
+        J = j;
         if (!startEnabled)
         {
             SetText("");
@@ -33,5 +43,28 @@ public class Item : MonoBehaviour
     public void SetText(string text)
     {
         textArea.text = text;
+    }
+
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        OnMouseEnter?.Invoke(this);
+    }
+
+    public void SetSiblingSelectColor()
+    {
+        _image.color = Color.Lerp(colorCache, Color.black, .3f);
+    }
+    public void SetelectColor()
+    {
+        _image.color = Color.Lerp(colorCache, Color.black, .5f);
+    }
+    public void ResetColor()
+    {
+        _image.color = colorCache;
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        OnMouseLeave?.Invoke(this);
     }
 }
