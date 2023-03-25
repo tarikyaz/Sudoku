@@ -71,6 +71,35 @@ public class BoardManager : MonoBehaviour
         {
             selectedItem.SetType(obj);
         }
+        if (GameIsFinished())
+        {
+            Debug.Log("Game is finished");
+        }
+
+    }
+    bool GameIsFinished()
+    {
+        bool isCurrect = true;
+        for (int i = 0; i < items.GetLength(0); i++)
+        {
+            for (int j = 0; j < items.GetLength(1); j++)
+            {
+                if (selectedItem != items[i, j])
+                {
+                    if (!items[i, j].ItsCurrect)
+                    {
+                        isCurrect = false;
+                        break;
+
+                    }
+                }
+                if (!isCurrect)
+                {
+                    break;
+                }
+            }
+        }
+        return isCurrect;
     }
     private void OnMouseClickItemHandler(Item _item)
     {

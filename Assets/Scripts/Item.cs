@@ -13,7 +13,7 @@ public class Item : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler ,
     [SerializeField] Image _image, hint_Image;
     LevelData.ItemTypeEnum itemCurrectType = LevelData.ItemTypeEnum.None;
     LevelData.ItemTypeEnum itemType = LevelData.ItemTypeEnum.None;
-    public bool ItsCurrect => itemType == itemCurrectType;
+    public bool ItsCurrect => itemType == itemCurrectType || isStartedEnabled;
     Color normalColorCache , hitColorChache;
     internal int I, J;
     bool isStartedEnabled = false;
@@ -56,6 +56,8 @@ public class Item : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler ,
             case LevelData.ItemTypeEnum.n9: SetText("9",false); break;
             default: SetText("",false); break;
         }
+
+        Debug.Log(ItsCurrect ? "currect" : "wrong");
     }
     public void SetText(string text, bool isHint)
     {
@@ -97,7 +99,10 @@ public class Item : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler ,
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        OnMouseClick?.Invoke(this);
+        if (!isStartedEnabled)
+        {
+            OnMouseClick?.Invoke(this);
+        }
     }
 
     internal void SetClickColor()
