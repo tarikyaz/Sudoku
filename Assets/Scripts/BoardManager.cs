@@ -70,6 +70,28 @@ public class BoardManager : MonoBehaviour
         if (selectedItem != null)
         {
             selectedItem.SetType(obj);
+            bool foundConflict = false;
+            Item[] relatives = GetRelavieItems(selectedItem);
+            if (selectedItem.VisualItemType != LevelData.ItemTypeEnum.None)
+            {
+
+                foreach (var item in relatives)
+                {
+                    if (item.VisualItemType == selectedItem.VisualItemType)
+                    {
+                        foundConflict = true;
+                        break;
+                    }
+                }
+                selectedItem.SetConflict(foundConflict);
+                foreach (var item2 in relatives)
+                {
+                    if (item2.VisualItemType == selectedItem.VisualItemType)
+                    {
+                        item2.SetConflict(foundConflict);
+                    }
+                }
+            }
         }
         if (GameIsFinished())
         {

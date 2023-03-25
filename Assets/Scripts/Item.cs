@@ -12,17 +12,21 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     [SerializeField] Image _image, hint_Image;
     [SerializeField] CanvasGroup hintImage_CanvasGroup;
     LevelData.ItemTypeEnum itemCurrectType = LevelData.ItemTypeEnum.None;
-    LevelData.ItemTypeEnum itemType = LevelData.ItemTypeEnum.None;
-    public bool ItsCurrect => itemType == itemCurrectType || isStartedEnabled;
-    Color normalColorCache, hitColorChache;
+    LevelData.ItemTypeEnum ItemType = LevelData.ItemTypeEnum.None;
+    internal LevelData.ItemTypeEnum VisualItemType => isStartedEnabled ? itemCurrectType : ItemType;
+
+    public bool ItsCurrect => ItemType == itemCurrectType || isStartedEnabled;
+    Color normalColorCache, hintColorCache;
+    Color colorCache => isStartedEnabled ? hintColorCache : normalColorCache;
     internal int I, J;
     bool isStartedEnabled = false;
     Tween channgeImageColorTeen;
     Tween channgeHintImageColorTeen;
+    bool _isConflict = false;
     public void Init(LevelData.ItemTypeEnum type, bool startEnabled, int i, int j)
     {
         normalColorCache = _image.color;
-        hitColorChache = hint_Image.color;
+        hintColorCache = hint_Image.color;
         itemCurrectType = type;
         isStartedEnabled = startEnabled;
         I = i;
@@ -46,7 +50,7 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     }
     public void SetType(LevelData.ItemTypeEnum type)
     {
-        itemType = type;
+        ItemType = type;
         switch (type)
         {
             case LevelData.ItemTypeEnum.n1: SetText("1", false); break;
@@ -86,15 +90,15 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void SetSiblingSelectColor()
     {
-        ChangeImageColor(Color.Lerp(normalColorCache, Color.black, .3f));
+        ChangeImageColor(Color.Lerp(colorCache, Color.black, .3f));
     }
     public void SetSlelectColor()
     {
-        ChangeImageColor(Color.Lerp(normalColorCache, Color.black, .5f));
+        ChangeImageColor(Color.Lerp(colorCache, Color.black, .5f));
     }
     public void ResetColor()
     {
-        ChangeImageColor(normalColorCache);
+        ChangeImageColor(colorCache);
     }
     public void OnPointerExit(PointerEventData eventData)
     {
@@ -115,7 +119,7 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     internal void SetClickColor()
     {
-        ChangeImageColor(Color.Lerp(normalColorCache, Color.white, .5f));
+        ChangeImageColor(Color.Lerp(colorCache, Color.white, .5f));
     }
 
     internal void TuggleHint(bool enable)
@@ -129,13 +133,26 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
             channgeHintImageColorTeen.Pause();
             channgeHintImageColorTeen.Kill();
             channgeHintImageColorTeen = hintImage_CanvasGroup.DOFade(enable ? 1 : 0, .5f);
-            hint_Image.color = normalColorCache;
+            ChangeImageColor(colorCache);
         }
     }
     void ChangeImageColor(Color newColor)
     {
+        if (_isConflict)
+        {
+            return;
+        }
         channgeImageColorTeen.Pause();
         channgeImageColorTeen.Kill();
-        channgeImageColorTeen = _image.DOColor(newColor, .25f);
+        Image image = isStartedEnabled ? hint_Image : _image;
+        channgeImageColorTeen = image.DOColor(newColor, .25f);
+        Debug.Log(image.name +" change color to " + newColor);
+    }
+
+    internal void SetConflict(bool isConflict)
+    {
+        Debug.Log("conflict " + true);
+        ChangeImageColor(isConflict ? Color.red : colorCache);
+        _isConflict = isConflict;
     }
 }
