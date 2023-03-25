@@ -14,12 +14,13 @@ public class Item : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler ,
     LevelData.ItemTypeEnum itemCurrectType = LevelData.ItemTypeEnum.None;
     LevelData.ItemTypeEnum itemType = LevelData.ItemTypeEnum.None;
     public bool ItsCurrect => itemType == itemCurrectType;
-    Color colorCache;
+    Color normalColorCache , hitColorChache;
     internal int I, J;
     bool isStartedEnabled = false;
     public void Init(LevelData.ItemTypeEnum type, bool startEnabled, int i, int j)
     {
-        colorCache = _image.color;
+        normalColorCache = _image.color;
+        hitColorChache = hint_Image.color;
         itemCurrectType = type;
         isStartedEnabled = startEnabled;
         I = i;
@@ -79,15 +80,15 @@ public class Item : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler ,
 
     public void SetSiblingSelectColor()
     {
-        _image.color = Color.Lerp(colorCache, Color.black, .3f);
+        _image.color = Color.Lerp(normalColorCache, Color.black, .3f);
     }
     public void SetSlelectColor()
     {
-        _image.color = Color.Lerp(colorCache, Color.black, .5f);
+        _image.color = Color.Lerp(normalColorCache, Color.black, .5f);
     }
     public void ResetColor()
     {
-        _image.color = colorCache;
+        _image.color = normalColorCache;
     }
     public void OnPointerExit(PointerEventData eventData)
     {
@@ -101,12 +102,21 @@ public class Item : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler ,
 
     internal void SetClickColor()
     {
-        _image.color = Color.Lerp(colorCache, Color.white, .5f);
+        _image.color = Color.Lerp(normalColorCache, Color.white, .5f);
 
     }
 
-    internal void TuggleHint(bool v)
+    internal void TuggleHint(bool enable)
     {
-        hint_Image.gameObject.SetActive(v);
+        if (isStartedEnabled)
+        {
+
+        }
+        else
+        {
+
+            hint_Image.gameObject.SetActive(enable);
+            hint_Image.color = normalColorCache;
+        }
     }
 }

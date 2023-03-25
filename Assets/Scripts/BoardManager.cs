@@ -12,6 +12,7 @@ public class BoardManager : MonoBehaviour
     Item selectedItem;
     Item[,] items = new Item[9, 9];
     float boardSize => GetComponent<RectTransform>().sizeDelta.x;
+    bool hintEnabled = false;
     struct NumSeries {
         public int a, b, c;
     }
@@ -62,6 +63,10 @@ public class BoardManager : MonoBehaviour
 
     private void OnKeyClickedHandler(LevelData.ItemTypeEnum obj)
     {
+        if (hintEnabled)
+        {
+            return;
+        }
         if (selectedItem != null)
         {
             selectedItem.SetType(obj);
@@ -69,6 +74,10 @@ public class BoardManager : MonoBehaviour
     }
     private void OnMouseClickItemHandler(Item _item)
     {
+        if (hintEnabled)
+        {
+            return;
+        }
         if (selectedItem != null)
         {
             selectedItem.ResetColor();
@@ -82,6 +91,10 @@ public class BoardManager : MonoBehaviour
 
     private void OnMouseLeaveItemHandler(Item _item)
     {
+        if (hintEnabled)
+        {
+            return;
+        }
         for (int i = 0; i < items.GetLength(0); i++)
         {
             for (int j = 0; j < items.GetLength(1); j++)
@@ -135,7 +148,10 @@ public class BoardManager : MonoBehaviour
     }
     private void OnMouseEnterItemHandler(Item _item)
     {
-
+        if (hintEnabled)
+        {
+            return;
+        }
         if (selectedItem != _item)
         {
             _item.SetSlelectColor();
@@ -185,6 +201,10 @@ public class BoardManager : MonoBehaviour
     }
     public void OnClickOutSide()
     {
+        if (hintEnabled)
+        {
+            return;
+        }
         if (selectedItem !=null)
         {
             selectedItem = null;
@@ -201,6 +221,11 @@ public class BoardManager : MonoBehaviour
 
     internal void ShowHint(Action onFinisHint)
     {
+        if (hintEnabled)
+        {
+            return;
+        }
+        hintEnabled = true;
         List<Item> items = new List<Item>();
         foreach (var cell in CellsArray)
         {
@@ -216,6 +241,7 @@ public class BoardManager : MonoBehaviour
                 item.TuggleHint(false);
             }
             onFinisHint?.Invoke();
+            hintEnabled = false;
         });
     }
 }
