@@ -93,7 +93,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 56.4
+  m_fontSize: 51.2
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -228,7 +228,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 56.4
+  m_fontSize: 51.2
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -373,6 +373,7 @@ GameObject:
   - component: {fileID: 9168680905704760615}
   - component: {fileID: 520592610026426434}
   - component: {fileID: 3360893572846548684}
+  - component: {fileID: 5749465056150814989}
   m_Layer: 5
   m_Name: Item
   m_TagString: Untagged
@@ -419,6 +420,7 @@ MonoBehaviour:
   _image: {fileID: 520592610026426434}
   hint_Image: {fileID: 3892097314694614050}
   hintImage_CanvasGroup: {fileID: 5133903392506113359}
+  outline: {fileID: 5749465056150814989}
 --- !u!222 &9168680905704760615
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -502,3 +504,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 100, y: 100}
   m_EdgeRadius: 0
+--- !u!114 &5749465056150814989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8380166189288028453}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: -3, y: -3}
+  m_UseGraphicAlpha: 1

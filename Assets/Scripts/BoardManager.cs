@@ -216,10 +216,6 @@ public class BoardManager : MonoBehaviour
     }
     public void OnClickOutSide()
     {
-        if (hintEnabled)
-        {
-            return;
-        }
         if (selectedItem !=null)
         {
             selectedItem = null;
@@ -242,6 +238,7 @@ public class BoardManager : MonoBehaviour
         }
         hintEnabled = true;
         List<Item> items = new List<Item>();
+        OnClickOutSide();
         foreach (var cell in CellsArray)
         {
             foreach (var item in cell.ItemsArray)

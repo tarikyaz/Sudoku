@@ -11,6 +11,7 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     [SerializeField] TMP_Text play_Text, hint_Text;
     [SerializeField] Image _image, hint_Image;
     [SerializeField] CanvasGroup hintImage_CanvasGroup;
+    [SerializeField] Outline outline;
     LevelData.ItemTypeEnum itemCurrectType = LevelData.ItemTypeEnum.None;
     LevelData.ItemTypeEnum ItemType = LevelData.ItemTypeEnum.None;
     internal LevelData.ItemTypeEnum VisualItemType => isStartedEnabled ? itemCurrectType : ItemType;
@@ -22,6 +23,7 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     bool isStartedEnabled = false;
     Tween channgeImageColorTeen;
     Tween channgeHintImageColorTeen;
+    Tween scalingTweem;
     internal bool IsConflict = false;
     Item[] relatives = new Item[0];
     public void Init(LevelData.ItemTypeEnum type, bool startEnabled, int i, int j)
@@ -36,6 +38,8 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         J = j;
         hint_Image.gameObject.SetActive(true);
         hintImage_CanvasGroup.alpha = isStartedEnabled ? 1 : 0;
+        outline.enabled = false;
+        transform.localScale = Vector3.one;
 
         switch (type)
         {
@@ -99,6 +103,10 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     }
     public void ResetColor()
     {
+        outline.enabled = false;
+        scalingTweem.Pause();
+        scalingTweem.Kill();
+        scalingTweem = transform.DOScale(1, .25f);
         ChangeImageColor(colorCache);
     }
     public void OnPointerExit(PointerEventData eventData)
@@ -120,6 +128,10 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     internal void SetClickColor()
     {
+        scalingTweem.Pause();
+        scalingTweem.Kill();
+        scalingTweem = transform.DOScale(.75f, .25f);
+        outline.enabled = true;
         ChangeImageColor(Color.Lerp(colorCache, Color.white, .5f));
     }
 
@@ -197,10 +209,7 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     internal void CheckConflict(bool isCheck)
     {
 
-        if (VisualItemType == LevelData.ItemTypeEnum.None || isStartedEnabled)
-        {
-            return;
-        }
+
         if (!isCheck)
         {
             foreach (var item in GetRelavieItems())
@@ -208,6 +217,10 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
                 item.SetConflict(false);
             }
             SetConflict(false);
+            return;
+        }
+        if (VisualItemType == LevelData.ItemTypeEnum.None || isStartedEnabled)
+        {
             return;
         }
         bool conflictFound = false;
@@ -233,6 +246,6 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         channgeImageColorTeen.Pause();
         channgeImageColorTeen.Kill();
         Image image = isStartedEnabled ? hint_Image : _image;
-        channgeImageColorTeen = image.DOColor(enable ? Color.red : colorCache, .25f);
+        channgeImageColorTeen = image.DOColor(enable ? Color.Lerp(colorCache, Color.red, .25f) : colorCache, .25f);
     }
 }
