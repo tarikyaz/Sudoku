@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using static UnityEditor.Progress;
 
 public class BoardManager : MonoBehaviour
 {
@@ -202,6 +201,7 @@ public class BoardManager : MonoBehaviour
             for (int j = 0; j < CellsArray.Length; j++)
             {
                 Item item = cell.ItemsArray[j];
+                
                 boardItems[i, j] = item;
                 if (levelNumbers == null)
                 {

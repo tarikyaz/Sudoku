@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu( fileName ="Level Setting", menuName = "Level/New Level Setting", order =0)]

@@ -1,4 +1,4 @@
-
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 
@@ -88,3 +88,4 @@ class NumbersWindow : EditorWindow {
         EditorUtility.SetDirty(_levelSetting);
     }
 }
+#endif
