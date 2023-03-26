@@ -28,9 +28,11 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     Item[] relatives = new Item[0];
     public void Init(LevelData.ItemTypeEnum type, bool startEnabled, int i, int j)
     {
+        IsConflict = false;
         normalColorCache = _image.color;
         hintColorCache = hint_Image.color;
         itemCurrectType = type;
+        SetType(LevelData.ItemTypeEnum.None);
         isStartedEnabled = startEnabled;
         I = i;
         J = j;

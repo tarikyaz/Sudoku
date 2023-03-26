@@ -1,0 +1,187 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 061e479188494d646bde8d8973d900a6, type: 3}
+  m_Name: Level Setting 1
+  m_EditorClassIdentifier: 
+  data:
+    CellsArray:
+    - ItemsArray:
+      - Type: 6
+        StartEnabled: 0
+      - Type: 4
+        StartEnabled: 1
+      - Type: 3
+        StartEnabled: 0
+      - Type: 8
+        StartEnabled: 1
+      - Type: 1
+        StartEnabled: 0
+      - Type: 5
+        StartEnabled: 1
+      - Type: 2
+        StartEnabled: 0
+      - Type: 9
+        StartEnabled: 0
+      - Type: 7
+        StartEnabled: 0
+    - ItemsArray:
+      - Type: 5
+        StartEnabled: 0
+      - Type: 1
+        StartEnabled: 1
+      - Type: 7
+        StartEnabled: 0
+      - Type: 3
+        StartEnabled: 0
+      - Type: 2
+        StartEnabled: 0
+      - Type: 9
+        StartEnabled: 0
+      - Type: 8
+        StartEnabled: 0
+      - Type: 6
+        StartEnabled: 0
+      - Type: 4
+        StartEnabled: 0
+    - ItemsArray:
+      - Type: 9
+        StartEnabled: 1
+      - Type: 2
+        StartEnabled: 0
+      - Type: 8
+        StartEnabled: 1
+      - Type: 7
+        StartEnabled: 1
+      - Type: 4
+        StartEnabled: 0
+      - Type: 6
+        StartEnabled: 0
+      - Type: 3
+        StartEnabled: 0
+      - Type: 1
+        StartEnabled: 1
+      - Type: 5
+        StartEnabled: 0
+    - ItemsArray:
+      - Type: 9
+        StartEnabled: 0
+      - Type: 2
+        StartEnabled: 1
+      - Type: 8
+        StartEnabled: 0
+      - Type: 4
+        StartEnabled: 0
+      - Type: 7
+        StartEnabled: 0
+      - Type: 1
+        StartEnabled: 1
+      - Type: 5
+        StartEnabled: 0
+      - Type: 3
+        StartEnabled: 1
+      - Type: 6
+        StartEnabled: 0
+    - ItemsArray:
+      - Type: 1
+        StartEnabled: 0
+      - Type: 7
+        StartEnabled: 0
+      - Type: 5
+        StartEnabled: 1
+      - Type: 6
+        StartEnabled: 1
+      - Type: 3
+        StartEnabled: 0
+      - Type: 2
+        StartEnabled: 0
+      - Type: 9
+        StartEnabled: 0
+      - Type: 4
+        StartEnabled: 0
+      - Type: 8
+        StartEnabled: 1
+    - ItemsArray:
+      - Type: 6
+        StartEnabled: 0
+      - Type: 3
+        StartEnabled: 0
+      - Type: 4
+        StartEnabled: 1
+      - Type: 5
+        StartEnabled: 0
+      - Type: 8
+        StartEnabled: 0
+      - Type: 9
+        StartEnabled: 0
+      - Type: 1
+        StartEnabled: 0
+      - Type: 7
+        StartEnabled: 0
+      - Type: 2
+        StartEnabled: 1
+    - ItemsArray:
+      - Type: 7
+        StartEnabled: 0
+      - Type: 5
+        StartEnabled: 0
+      - Type: 9
+        StartEnabled: 0
+      - Type: 3
+        StartEnabled: 1
+      - Type: 6
+        StartEnabled: 0
+      - Type: 4
+        StartEnabled: 1
+      - Type: 1
+        StartEnabled: 0
+      - Type: 8
+        StartEnabled: 1
+      - Type: 2
+        StartEnabled: 0
+    - ItemsArray:
+      - Type: 4
+        StartEnabled: 0
+      - Type: 8
+        StartEnabled: 0
+      - Type: 3
+        StartEnabled: 0
+      - Type: 2
+        StartEnabled: 0
+      - Type: 5
+        StartEnabled: 0
+      - Type: 1
+        StartEnabled: 0
+      - Type: 7
+        StartEnabled: 0
+      - Type: 9
+        StartEnabled: 1
+      - Type: 6
+        StartEnabled: 0
+    - ItemsArray:
+      - Type: 2
+        StartEnabled: 0
+      - Type: 6
+        StartEnabled: 1
+      - Type: 1
+        StartEnabled: 0
+      - Type: 8
+        StartEnabled: 1
+      - Type: 9
+        StartEnabled: 0
+      - Type: 7
+        StartEnabled: 0
+      - Type: 4
+        StartEnabled: 1
+      - Type: 5
+        StartEnabled: 0
+      - Type: 3
+        StartEnabled: 1
