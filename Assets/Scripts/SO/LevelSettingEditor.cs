@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEditor;
-using Unity.VisualScripting;
 
 [CustomEditor(typeof(LevelSetting))]
 public class LevelSettingEditor : Editor
@@ -10,16 +8,40 @@ public class LevelSettingEditor : Editor
 
     public override void OnInspectorGUI()
     {
-
-        if (GUILayout.Button("Open numbers window"))
+        LevelSetting levelSetting = (LevelSetting)target;
+        var data = levelSetting.Data;
+        int size = 20;
+        int padding = 2;
+        int xPadding = 0;
+        int yPadding = 0;
+        
+        for (int i = 0; i < data.CellsArray.Length; i++)
         {
-            LevelSetting levelSetting = (LevelSetting)target;
-
-            NumbersWindow.OpenWindow(levelSetting);
+            LevelData.CellClass cell = data.CellsArray[i];
+            for (int j = 0; j < cell.ItemsArray.Length; j++)
+            {
+                if (j == 6 || j == 7 || j == 8)
+                {
+                    yPadding = 5;
+                }
+                if (j==0 || j== 3 || j==6)
+                {
+                    xPadding = 5;
+                }
+                GUILayout.BeginArea( new Rect((size + padding) * (j % 3) + 3 * (size + padding+ xPadding) * (i % 3), (size + padding) * (j / 3) + 3 * (size + padding+ yPadding) * (i / 3), size, size));
+                LevelData.ItemClass item = cell.ItemsArray[j];
+                string textStr = item.Type.ToString();
+                textStr = textStr[1].ToString();
+                EditorGUILayout.LabelField(textStr, new GUIStyle { alignment = TextAnchor.MiddleCenter, normal = new GUIStyleState { textColor = item.StartEnabled ? Color.red : Color.white } });
+                GUILayout.EndArea();
+            }
         }
-        return;
-
-
+        GUILayout.Space(9 * (size + padding + yPadding) + 10);
+        if (GUILayout.Button("Edit numbers"))
+        {
+            NumbersWindow.OpenWindow(levelSetting);
+            
+        }
     }
 }
 class NumbersWindow : EditorWindow {
@@ -37,13 +59,13 @@ class NumbersWindow : EditorWindow {
             return;
         }
         var data = _levelSetting.Data;
+        int size = 55;
+        int padding = 5;
         for (int i = 0; i < data.CellsArray.Length; i++)
         {
             LevelData.CellClass cell = data.CellsArray[i];
             for (int j = 0; j < cell.ItemsArray.Length; j++)
             {
-                int size = 55;
-                int padding = 5;
                 GUILayout.BeginArea(new Rect((size + padding) * (j % 3) + 3 * (size + padding) * (i % 3), (size + padding) * (j / 3) + 3 * (size + padding) * (i / 3), size, size));
                 LevelData.ItemClass item = cell.ItemsArray[j];
                 EditorGUILayout.LabelField($"{i + 1}x{j + 1}", new GUIStyle { alignment = TextAnchor.MiddleCenter, normal = new GUIStyleState { textColor = Color.white } });
