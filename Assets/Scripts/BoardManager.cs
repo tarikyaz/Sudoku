@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using static UnityEditor.Progress;
+
 public class BoardManager : MonoBehaviour
 {
     [SerializeField] RectTransform canvasRec;
@@ -10,8 +12,8 @@ public class BoardManager : MonoBehaviour
     [SerializeField] Cell[] CellsArray = new Cell[9];
     [SerializeField] LevelSetting levelTest;
     Item selectedItem;
-    Item[,] items = new Item[9, 9];
-    float boardSize => GetComponent<RectTransform>().sizeDelta.x;
+    internal Item[,] boardItems { get; private set; }
+    internal float boardSize => GetComponent<RectTransform>().sizeDelta.x;
     bool hintEnabled = false;
     struct NumSeries {
         public int a, b, c;
@@ -70,45 +72,46 @@ public class BoardManager : MonoBehaviour
         if (selectedItem != null)
         {
             selectedItem.SetType(obj);
-            bool foundConflict = false;
-            Item[] relatives = GetRelavieItems(selectedItem);
-            if (selectedItem.VisualItemType != LevelData.ItemTypeEnum.None)
-            {
-
-                foreach (var item in relatives)
-                {
-                    if (item.VisualItemType == selectedItem.VisualItemType)
-                    {
-                        foundConflict = true;
-                        break;
-                    }
-                }
-                selectedItem.SetConflict(foundConflict);
-                foreach (var item2 in relatives)
-                {
-                    if (item2.VisualItemType == selectedItem.VisualItemType)
-                    {
-                        item2.SetConflict(foundConflict);
-                    }
-                }
-            }
+            
         }
+        CheckConflict();
         if (GameIsFinished())
         {
             Debug.Log("Game is finished");
         }
 
     }
+    void CheckConflict()
+    {
+        for (int i = 0; i < boardItems.GetLength(0); i++)
+        {
+            for (int j = 0; j < boardItems.GetLength(1); j++)
+            {
+                Item item = boardItems[i, j];
+                item.CheckConflict(false);
+            }
+        }
+        for (int i = 0; i < boardItems.GetLength(0); i++)
+        {
+            for (int j = 0; j < boardItems.GetLength(1); j++)
+            {
+                Item item = boardItems[i, j];
+                item.CheckConflict(true);
+            }
+
+        }
+    }
+
     bool GameIsFinished()
     {
         bool isCurrect = true;
-        for (int i = 0; i < items.GetLength(0); i++)
+        for (int i = 0; i < boardItems.GetLength(0); i++)
         {
-            for (int j = 0; j < items.GetLength(1); j++)
+            for (int j = 0; j < boardItems.GetLength(1); j++)
             {
-                if (selectedItem != items[i, j])
+                if (selectedItem != boardItems[i, j])
                 {
-                    if (!items[i, j].ItsCurrect)
+                    if (!boardItems[i, j].ItsCurrect)
                     {
                         isCurrect = false;
                         break;
@@ -146,55 +149,16 @@ public class BoardManager : MonoBehaviour
         {
             return;
         }
-        for (int i = 0; i < items.GetLength(0); i++)
+        for (int i = 0; i < boardItems.GetLength(0); i++)
         {
-            for (int j = 0; j < items.GetLength(1); j++)
+            for (int j = 0; j < boardItems.GetLength(1); j++)
             {
-                if (selectedItem != items[i, j])
+                if (selectedItem != boardItems[i, j])
                 {
-                    items[i, j].ResetColor();
+                    boardItems[i, j].ResetColor();
                 }
             }
         }
-
-    }
-    Item[] GetRelavieItems(Item _item)
-    {
-        List<Item> newItems = new List<Item>();
-        var colls = Physics2D.OverlapBoxAll(_item.transform.position, new Vector2(.1f, boardSize * 2), 0);
-        Item item;
-        foreach (var coll in colls)
-        {
-            item = coll.gameObject.GetComponent<Item>();
-            if (!newItems.Contains(item) && item != _item)
-            {
-                newItems.Add(item);
-            }
-        }
-        var colls2 = Physics2D.OverlapBoxAll(_item.transform.position, new Vector2(.1f, boardSize * 2), 90);
-        foreach (var coll in colls2)
-        {
-            item = coll.gameObject.GetComponent<Item>();
-            if (!newItems.Contains(item) && item != _item)
-            {
-                newItems.Add(item);
-            }
-        }
-        for (int i = 0; i < items.GetLength(0); i++)
-        {
-            for (int j = 0; j < items.GetLength(1); j++)
-            {
-                if (i == _item.I)
-                {
-                    item = items[i, j];
-                    if (!newItems.Contains(item) && item != _item)
-                    {
-                        newItems.Add(item);
-                    }
-                }
-            }
-        }
-        return newItems.ToArray();
 
     }
     private void OnMouseEnterItemHandler(Item _item)
@@ -207,7 +171,7 @@ public class BoardManager : MonoBehaviour
         {
             _item.SetSlelectColor();
         }
-        foreach (var item in GetRelavieItems(_item))
+        foreach (var item in _item.GetRelavieItems())
         {
             if (selectedItem != item)
             {
@@ -231,14 +195,14 @@ public class BoardManager : MonoBehaviour
         {
             levelNumbers = levelTest.GetArrayOfNumbers();
         }
-
+        boardItems = new Item[9, 9];
         for (int i = 0; i < CellsArray.Length; i++)
         {
             Cell cell = CellsArray[i];
             for (int j = 0; j < CellsArray.Length; j++)
             {
                 Item item = cell.ItemsArray[j];
-                items[i, j] = item;
+                boardItems[i, j] = item;
                 if (levelNumbers == null)
                 {
                     item.SetText($"{i + 1}x{j + 1}",true);
@@ -260,11 +224,11 @@ public class BoardManager : MonoBehaviour
         {
             selectedItem = null;
         }
-        for (int i = 0; i < items.GetLength(0); i++)
+        for (int i = 0; i < boardItems.GetLength(0); i++)
         {
-            for (int j = 0; j < items.GetLength(1); j++)
+            for (int j = 0; j < boardItems.GetLength(1); j++)
             {
-                items[i, j].ResetColor();
+                boardItems[i, j].ResetColor();
             }
         }
         InGameManager.Instance.keyboard.Hide();

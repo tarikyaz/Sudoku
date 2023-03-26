@@ -1,9 +1,11 @@
 using DG.Tweening;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
@@ -22,7 +24,8 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     bool isStartedEnabled = false;
     Tween channgeImageColorTeen;
     Tween channgeHintImageColorTeen;
-    bool _isConflict = false;
+    internal bool IsConflict = false;
+    Item[] relatives = new Item[0];
     public void Init(LevelData.ItemTypeEnum type, bool startEnabled, int i, int j)
     {
         normalColorCache = _image.color;
@@ -32,7 +35,7 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         I = i;
         J = j;
         hint_Image.gameObject.SetActive(true);
-        hintImage_CanvasGroup.alpha = isStartedEnabled ? 1:0;
+        hintImage_CanvasGroup.alpha = isStartedEnabled ? 1 : 0;
 
         switch (type)
         {
@@ -64,8 +67,6 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
             case LevelData.ItemTypeEnum.n9: SetText("9", false); break;
             default: SetText("", false); break;
         }
-
-        Debug.Log(ItsCurrect ? "currect" : "wrong");
     }
     public void SetText(string text, bool isHint)
     {
@@ -138,7 +139,7 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     }
     void ChangeImageColor(Color newColor)
     {
-        if (_isConflict)
+        if (IsConflict)
         {
             return;
         }
@@ -146,13 +147,92 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         channgeImageColorTeen.Kill();
         Image image = isStartedEnabled ? hint_Image : _image;
         channgeImageColorTeen = image.DOColor(newColor, .25f);
-        Debug.Log(image.name +" change color to " + newColor);
+    }
+    public Item[] GetRelavieItems()
+    {
+        if (relatives.Length > 0)
+        {
+            return relatives;
+        }
+        List<Item> newItems = new List<Item>();
+        float boardSize = InGameManager.Instance.BoardManager.boardSize;
+        var boardItems = InGameManager.Instance.BoardManager.boardItems;
+        var colls = Physics2D.OverlapBoxAll(transform.position, new Vector2(.1f, boardSize * 2), 0);
+        Item item;
+        foreach (var coll in colls)
+        {
+            item = coll.gameObject.GetComponent<Item>();
+            if (!newItems.Contains(item) && item != this)
+            {
+                newItems.Add(item);
+            }
+        }
+        var colls2 = Physics2D.OverlapBoxAll(transform.position, new Vector2(.1f, boardSize * 2), 90);
+        foreach (var coll in colls2)
+        {
+            item = coll.gameObject.GetComponent<Item>();
+            if (!newItems.Contains(item) && item != this)
+            {
+                newItems.Add(item);
+            }
+        }
+        for (int i = 0; i < boardItems.GetLength(0); i++)
+        {
+            for (int j = 0; j < boardItems.GetLength(1); j++)
+            {
+                if (i == I)
+                {
+                    item = boardItems[i, j];
+                    if (!newItems.Contains(item) && item != this)
+                    {
+                        newItems.Add(item);
+                    }
+                }
+            }
+        }
+        relatives = newItems.ToArray();
+        return relatives;
     }
 
-    internal void SetConflict(bool isConflict)
+    internal void CheckConflict(bool isCheck)
     {
-        Debug.Log("conflict " + true);
-        ChangeImageColor(isConflict ? Color.red : colorCache);
-        _isConflict = isConflict;
+
+        if (VisualItemType == LevelData.ItemTypeEnum.None || isStartedEnabled)
+        {
+            return;
+        }
+        if (!isCheck)
+        {
+            foreach (var item in GetRelavieItems())
+            {
+                item.SetConflict(false);
+            }
+            SetConflict(false);
+            return;
+        }
+        bool conflictFound = false;
+        foreach (var item in GetRelavieItems())
+        {
+            if (item.VisualItemType == VisualItemType)
+            {
+                if (!conflictFound)
+                {
+                    conflictFound = true;
+                }
+                item.SetConflict(true);
+            }
+        }
+        if (conflictFound)
+        {
+            SetConflict(true);
+        }
+    }
+    internal void SetConflict(bool enable)
+    {
+        IsConflict = enable;
+        channgeImageColorTeen.Pause();
+        channgeImageColorTeen.Kill();
+        Image image = isStartedEnabled ? hint_Image : _image;
+        channgeImageColorTeen = image.DOColor(enable ? Color.red : colorCache, .25f);
     }
 }
