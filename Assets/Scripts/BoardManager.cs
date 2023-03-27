@@ -78,10 +78,17 @@ public class BoardManager : MonoBehaviour
         CheckConflict();
         if (GameIsFinished())
         {
-            Debug.Log("Game is finished");
+            LevelIsDone();
         }
 
     }
+
+    private static void LevelIsDone()
+    {
+        BaseEvents.CallOnLevelFinish(true);
+        Debug.Log("Game is finished");
+    }
+
     void CheckConflict()
     {
         for (int i = 0; i < boardItems.GetLength(0); i++)
