@@ -239,6 +239,14 @@ public class BoardManager : MonoBehaviour
         hintEnabled = true;
         List<Item> items = new List<Item>();
         OnClickOutSide();
+        for (int i = 0; i < boardItems.GetLength(0); i++)
+        {
+            for (int j = 0; j < boardItems.GetLength(1); j++)
+            {
+                Item item = boardItems[i, j];
+                item.CheckConflict(false);
+            }
+        }
         foreach (var cell in CellsArray)
         {
             foreach (var item in cell.ItemsArray)
@@ -251,6 +259,14 @@ public class BoardManager : MonoBehaviour
             foreach (var item in items)
             {
                 item.TuggleHint(false);
+            }
+            for (int i = 0; i < boardItems.GetLength(0); i++)
+            {
+                for (int j = 0; j < boardItems.GetLength(1); j++)
+                {
+                    Item item = boardItems[i, j];
+                    item.CheckConflict(true);
+                }
             }
             onFinisHint?.Invoke();
             hintEnabled = false;

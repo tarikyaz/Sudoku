@@ -145,8 +145,11 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         {
             channgeHintImageColorTeen.Pause();
             channgeHintImageColorTeen.Kill();
+            channgeImageColorTeen.Pause();
+            channgeImageColorTeen.Kill();
+            Image image = hint_Image;
+            image.color = enable ? normalColorCache : colorCache;
             channgeHintImageColorTeen = hintImage_CanvasGroup.DOFade(enable ? 1 : 0, .5f);
-            ChangeImageColor(colorCache);
         }
     }
     void ChangeImageColor(Color newColor)
