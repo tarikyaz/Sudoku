@@ -26,6 +26,8 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     Tween scalingTweem;
     internal bool IsConflict = false;
     Item[] relatives = new Item[0];
+    LevelManager currentLevel => GameManager.Instance.currrentLevel;
+
     public void Init(LevelData.ItemTypeEnum type, bool startEnabled, int i, int j)
     {
         IsConflict = false;
@@ -122,7 +124,7 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         }
         else
         {
-            InGameManager.Instance.BoardManager.OnClickOutSide();
+            currentLevel.BoardManager.OnClickOutSide();
         }
     }
 
@@ -170,8 +172,8 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
             return relatives;
         }
         List<Item> newItems = new List<Item>();
-        float boardSize = InGameManager.Instance.BoardManager.boardSize;
-        var boardItems = InGameManager.Instance.BoardManager.boardItems;
+        float boardSize = currentLevel.BoardManager.boardSize;
+        var boardItems = currentLevel.BoardManager.boardItems;
         var colls = Physics2D.OverlapBoxAll(transform.position, new Vector2(.1f, boardSize * 2), 0);
         Item item;
         foreach (var coll in colls)

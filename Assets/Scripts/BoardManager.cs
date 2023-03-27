@@ -9,16 +9,18 @@ public class BoardManager : MonoBehaviour
     [SerializeField] RectTransform canvasRec;
     [SerializeField] GridLayoutGroup layoutGroup;
     [SerializeField] Cell[] CellsArray = new Cell[9];
-    [SerializeField] LevelSetting levelTest;
+    LevelSetting currentLevelSetting;
     Item selectedItem;
     internal Item[,] boardItems { get; private set; }
     internal float boardSize => GetComponent<RectTransform>().sizeDelta.x;
     bool hintEnabled = false;
+    LevelManager currentLevel => GameManager.Instance.currrentLevel;
     struct NumSeries {
         public int a, b, c;
     }
-   public void Init()
+   public void Init(LevelSetting levelSetting)
     {
+        currentLevelSetting = levelSetting;
         InitScreen();
         InitNumbers();
     }
@@ -139,7 +141,7 @@ public class BoardManager : MonoBehaviour
         selectedItem = _item;
         OnMouseEnterItemHandler(_item);
         selectedItem.SetClickColor();
-        InGameManager.Instance.keyboard.Show();
+        currentLevel.keyboard.Show();
     }
 
     private void OnMouseLeaveItemHandler(Item _item)
@@ -190,9 +192,9 @@ public class BoardManager : MonoBehaviour
     private void InitNumbers()
     {
         LevelData.ItemClass[,] levelNumbers = null;
-        if (levelTest != null)
+        if (currentLevelSetting != null)
         {
-            levelNumbers = levelTest.GetArrayOfNumbers();
+            levelNumbers = currentLevelSetting.GetArrayOfNumbers();
         }
         boardItems = new Item[9, 9];
         for (int i = 0; i < CellsArray.Length; i++)
@@ -227,7 +229,7 @@ public class BoardManager : MonoBehaviour
                 boardItems[i, j].ResetColor();
             }
         }
-        InGameManager.Instance.keyboard.Hide();
+        currentLevel.keyboard.Hide();
     }
 
     internal void ShowHint(Action onFinisHint)
