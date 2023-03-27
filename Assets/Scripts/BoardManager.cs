@@ -9,18 +9,18 @@ public class BoardManager : MonoBehaviour
     [SerializeField] RectTransform canvasRec;
     [SerializeField] GridLayoutGroup layoutGroup;
     [SerializeField] Cell[] CellsArray = new Cell[9];
-    LevelSetting currentLevelSetting;
     Item selectedItem;
     internal Item[,] boardItems { get; private set; }
     internal float boardSize => GetComponent<RectTransform>().sizeDelta.x;
     bool hintEnabled = false;
-    LevelManager currentLevel => GameManager.Instance.currrentLevel;
+    LevelManager currentLevel;
+    LevelSetting currentLevelSetting => currentLevel !=null ?  currentLevel.currentLevelSetting : null;
     struct NumSeries {
         public int a, b, c;
     }
-   public void Init(LevelSetting levelSetting)
+   public void Init(LevelManager levelManager)
     {
-        currentLevelSetting = levelSetting;
+        currentLevel = levelManager;
         InitScreen();
         InitNumbers();
     }
@@ -211,7 +211,7 @@ public class BoardManager : MonoBehaviour
                 }
                 else
                 {
-                    item.Init(levelNumbers[i, j].Type, levelNumbers[i,j].StartEnabled, i,j);
+                    item.Init(currentLevel, levelNumbers[i, j].Type, levelNumbers[i,j].StartEnabled, i,j);
                 }
             }
         }

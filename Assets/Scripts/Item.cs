@@ -27,10 +27,11 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     Tween scalingTweem;
     internal bool IsConflict = false;
     Item[] relatives = new Item[0];
-    LevelManager currentLevel => GameManager.Instance.currrentLevel;
+    LevelManager _currentLevel;
 
-    public void Init(LevelData.ItemTypeEnum type, bool startEnabled, int i, int j)
+    public void Init(LevelManager currentLevel, LevelData.ItemTypeEnum type, bool startEnabled, int i, int j)
     {
+        _currentLevel = currentLevel;
         IsConflict = false;
         normalColorCache = _image.color;
         hintColorCache = hint_Image.color;
@@ -128,7 +129,7 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         }
         else
         {
-            currentLevel.BoardManager.OnClickOutSide();
+            _currentLevel.BoardManager.OnClickOutSide();
         }
     }
 
@@ -178,8 +179,8 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
             return relatives;
         }
         List<Item> newItems = new List<Item>();
-        float boardSize = currentLevel.BoardManager.boardSize;
-        var boardItems = currentLevel.BoardManager.boardItems;
+        float boardSize = _currentLevel.BoardManager.boardSize;
+        var boardItems = _currentLevel.BoardManager.boardItems;
         var colls = Physics2D.OverlapBoxAll(transform.position, new Vector2(.1f, boardSize * 2), 0);
         Item item;
         foreach (var coll in colls)
