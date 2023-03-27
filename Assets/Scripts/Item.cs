@@ -12,6 +12,7 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     [SerializeField] Image _image, hint_Image;
     [SerializeField] CanvasGroup hintImage_CanvasGroup;
     [SerializeField] Outline outline;
+    [SerializeField] ParticleSystem idleParticleSystem;
     LevelData.ItemTypeEnum itemCurrectType = LevelData.ItemTypeEnum.None;
     LevelData.ItemTypeEnum ItemType = LevelData.ItemTypeEnum.None;
     internal LevelData.ItemTypeEnum VisualItemType => isStartedEnabled ? itemCurrectType : ItemType;
@@ -42,6 +43,9 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         hintImage_CanvasGroup.alpha = isStartedEnabled ? 1 : 0;
         outline.enabled = false;
         transform.localScale = Vector3.one;
+        var main = idleParticleSystem.main;
+        Color targetColor = isStartedEnabled ? hintColorCache : normalColorCache;
+        main.startColor = targetColor;
 
         switch (type)
         {
@@ -160,6 +164,8 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         {
             return;
         }
+        var main = idleParticleSystem.main;
+        main.startColor = newColor;
         channgeImageColorTeen.Pause();
         channgeImageColorTeen.Kill();
         Image image = isStartedEnabled ? hint_Image : _image;
@@ -251,6 +257,9 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         channgeImageColorTeen.Pause();
         channgeImageColorTeen.Kill();
         Image image = isStartedEnabled ? hint_Image : _image;
-        channgeImageColorTeen = image.DOColor(enable ? Color.Lerp(colorCache, Color.red, .25f) : colorCache, .25f);
+        Color targetColor = enable ? Color.Lerp(colorCache, Color.red, .25f) : colorCache;
+        var main = idleParticleSystem.main;
+        main.startColor = targetColor;
+        channgeImageColorTeen = image.DOColor(targetColor, .25f);
     }
 }
